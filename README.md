@@ -12,3 +12,5 @@ This will allow us to use `WalletConnect` directly from the `expo` client withou
 
 Please go ahead and install the packages via `yarn install`, then, run `yarn start` or `expo start`.
 Once the build is complete and opened in the `Expo Go` app, connect your wallet by pressing the `Connect a wallet` button.
+
+![alt text](./assets/gifs/walletconnect-expo-demo.gif)
