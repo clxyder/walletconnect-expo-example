@@ -20,7 +20,8 @@ const queriesXml = `
     <action android:name="android.intent.action.VIEW" />
     <data android:scheme="wss"/>
   </intent>
-</queries>`;
+</queries>
+`;
 
 type KeyValuePair = {
   $: {

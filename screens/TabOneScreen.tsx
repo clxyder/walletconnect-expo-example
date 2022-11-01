@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-
+import ServerService from '../api/ServerService';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 
 const shortenAddress = (address: string) => {
@@ -16,7 +16,7 @@ const shortenAddress = (address: string) => {
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
   const connector = useWalletConnect();
-
+  const messageToSign = "This signature is needed to verify that you are the owner of this wallet NONCE: " /*/+ crypto.randomUUID()/*/
   const connectWallet = React.useCallback(() => {
     return connector.connect();
   }, [connector]);
@@ -25,9 +25,36 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     return connector.killSession();
   }, [connector]);
 
+ 
+  const signMessage = React.useCallback( async () => {
+    console.log("FIRMANDO MENSAJE")
+    console.log(connector.accounts[0])
+    return await connector.signPersonalMessage([connector.accounts[0], messageToSign]).then(response => {
+    console.log(response)
+    AsyncStorage.setItem('signInToken',response);
+   
+    console.log("MANDANDO FIRMA:" + AsyncStorage.getItem('singInToken'));
+    postSignedHash();
+  }).catch(error => {
+      console.log(error)
+    });
+  }, [connector])
+
+  const postSignedHash = React.useCallback( async () =>{
+    let token = await AsyncStorage.getItem('signInToken')
+    return await ServerService.postSignedHash(messageToSign,token,connector.accounts[0])
+                .then((response: any) =>
+                  {
+                    AsyncStorage.setItem('JWT',response.data.content)
+                    console.log("JTW TOKEN IS: " + response.data.content)
+                  }).catch(error => {
+                    console.log(error)     
+                  });
+  },[connector])
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>Tab One HEHE</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
@@ -37,6 +64,9 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
       {!!connector.connected && (
         <>
           <Text>{shortenAddress(connector.accounts[0])}</Text>
+          <TouchableOpacity onPress={signMessage} style={styles.buttonStyle}>
+            <Text style={styles.buttonTextStyle}>Sign Message</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={killSession} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Log out</Text>
           </TouchableOpacity>
