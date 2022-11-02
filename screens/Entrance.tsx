@@ -1,6 +1,6 @@
 import React from 'react';
 import {useEffect, useState} from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, Button } from 'react-native';
 import ServerService from '../api/ServerService';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -8,15 +8,34 @@ import { RootTabScreenProps } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useWalletConnect } from '@walletconnect/react-native-dapp';
 import axios from 'axios';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Home from './Home'
+import BottomTabNavigator from './BottomTabNavigator'
+import ChatScreen from './ChatScreen';
 
+const Stack = createNativeStackNavigator();
 const shortenAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(
     address.length - 4,
     address.length
   )}`;
 }
-
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
+export default function NavigationManager() {
+  
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Entrance" component={Entrance} options={{ title: 'Welcome' }} />
+        <Stack.Screen name="Home" component={Home} options={{ title: 'Agora' }} />
+        <Stack.Screen name="Chats" component={ChatScreen} />
+        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+  
+}
+ function Entrance({ navigation }: any) {
   const connector = useWalletConnect();
   const messageToSign = "This signature is needed to verify that you are the owner of this wallet NONCE: " /*/+ crypto.randomUUID()/*/
 
@@ -91,8 +110,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
     });
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One HEHE</Text>
+    
+      
+      
+       
+       
+      
+        <View style={styles.container}>
+      <Text style={styles.title}>Tab One HEHE2</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
@@ -111,9 +136,18 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'
           <TouchableOpacity onPress={killAUTH} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Delete JWT</Text>
           </TouchableOpacity>
+          <Button
+          title="My Active Chats"
+          onPress={() =>{
+            navigation.navigate('Home')
+            console.log("navigatedEEEEE")}
+          }
+          />
         </>
+        
       )}
-    </View>
+        </View>
+   
   );
 }
 

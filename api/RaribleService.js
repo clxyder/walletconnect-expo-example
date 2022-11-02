@@ -34,7 +34,7 @@ class RaribleService {
         //     url: 'https://api.ropsten.x.immutable.com/v1/assets',
         //     headers: {'Content-Type': 'application/json'}
 
-            return axios.get(`https://api.ropsten.x.immutable.com/v1/assets`,{user: ownerAddr})
+            return axios.get(`https://api.sandbox.x.immutable.com/v1/assets`,{user: ownerAddr})
 
     
     }
