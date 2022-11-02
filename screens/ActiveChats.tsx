@@ -12,9 +12,9 @@ import {
 import ChatScreen from './ChatScreen';
 
 
-export default class ActiveChats extends Component {
+export default class ActiveChats extends Component<{navigation: any}, {calls: any}> {
 
-  constructor(props) {
+  constructor(props:any) {
     super(props);
     this.state = {
       calls: [
@@ -41,19 +41,19 @@ export default class ActiveChats extends Component {
 
 
 
-  renderItem = ({navigation=this.props.navigation,item}) => {
+  renderItem = (props: any) => {
     
     return (
-      <TouchableOpacity onPress = {() => navigation.navigate('Chats')}>
+      <TouchableOpacity onPress = {() => this.props.navigation.navigate('Chats')}>
         <View style={styles.row}>
-          <Image source={{ uri: item.image }} style={styles.pic} />
+          <Image source={{ uri: props.item.image }} style={styles.pic} />
           <View>
             <View style={styles.nameContainer}>
-              <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
+              <Text style={styles.nameTxt} numberOfLines={1} ellipsizeMode="tail">{props.item.name}</Text>
               <Text style={styles.mblTxt}>Mobile</Text>
             </View>
             <View style={styles.msgContainer}>
-              <Text style={styles.msgTxt}>{item.status}</Text>
+              <Text style={styles.msgTxt}>{props.item.status}</Text>
             </View>
           </View>
         </View>

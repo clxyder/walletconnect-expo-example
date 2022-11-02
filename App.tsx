@@ -6,6 +6,7 @@ import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 import Entrance from './screens/Entrance'
 import NavigatorManager from'./screens/Entrance'
+import 'react-native-gesture-handler'
 
 export default function App() {
   const isLoadingComplete = useCachedResources();

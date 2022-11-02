@@ -13,7 +13,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './Home'
 import BottomTabNavigator from './BottomTabNavigator'
 import ChatScreen from './ChatScreen';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
+
+
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 const shortenAddress = (address: string) => {
   return `${address.slice(0, 6)}...${address.slice(
@@ -22,16 +26,23 @@ const shortenAddress = (address: string) => {
   )}`;
 }
 export default function NavigationManager() {
-  
+  const connector = useWalletConnect();
   return (
+    <>
+    
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Entrance" component={Entrance} options={{ title: 'Welcome' }} />
         <Stack.Screen name="Home" component={Home} options={{ title: 'Agora' }} />
         <Stack.Screen name="Chats" component={ChatScreen} />
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+       
       </Stack.Navigator>
+
+      
     </NavigationContainer>
+    
+   </>
   );
   
 }
@@ -47,6 +58,7 @@ export default function NavigationManager() {
     console.log(" -- STARTING APP --")
     retrieveJWT()
     
+
   }, []);
 
 
@@ -117,7 +129,7 @@ export default function NavigationManager() {
        
       
         <View style={styles.container}>
-      <Text style={styles.title}>Tab One HEHE2</Text>
+      <Text style={styles.title}>Welcome to Agora</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {!connector.connected && (
         <TouchableOpacity onPress={connectWallet} style={styles.buttonStyle}>
@@ -136,13 +148,12 @@ export default function NavigationManager() {
           <TouchableOpacity onPress={killAUTH} style={styles.buttonStyle}>
             <Text style={styles.buttonTextStyle}>Delete JWT</Text>
           </TouchableOpacity>
-          <Button
-          title="My Active Chats"
-          onPress={() =>{
-            navigation.navigate('Home')
-            console.log("navigatedEEEEE")}
-          }
-          />
+          <TouchableOpacity onPress={() =>{ navigation.navigate('Home')
+            console.log("navigatedEEEEE")} 
+          }style={styles.buttonStyle}
+          >
+          <Text style={styles.buttonTextStyle}>Enter APP</Text>
+          </TouchableOpacity>
         </>
         
       )}
