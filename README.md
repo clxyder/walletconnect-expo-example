@@ -1,3 +1,10 @@
+### Deprecation Notice
+
+⚠️ **Deprecation Warning:** This project will stop working after June 28. We recommend migrating to [@web3modal/react-native](https://github.com/WalletConnect/web3modal-react-native) for future development.
+
+**Reason for Deprecation:** This example is based on `WalletConnect v1` packages, and they will stop working on June 28. More info [here](https://medium.com/walletconnect/walletconnect-v1-0-sunset-notice-and-migration-schedule-8af9d3720d2e)
+
+
 # WalletConnect Example on Expo
 
 This is a simple example how to get `WalletConnect` up and running with `Expo` for React Native.
